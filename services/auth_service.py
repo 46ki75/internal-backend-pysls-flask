@@ -1,3 +1,8 @@
+from models.user_model import UserModel
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
+
 class AuthService:
     """
     A service class dedicated to handle authentication related operations.
@@ -15,3 +20,9 @@ class AuthService:
         - str: A message describing the login authentication process.
         """
         return 'This is the pass for login authentication. Use the POST method for login authentication.'
+    
+    @staticmethod
+    def verify(name, password):
+        user = UserModel()
+        return user.verify(name=name,password=password)
+        

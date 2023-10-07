@@ -32,7 +32,4 @@ class AuthController(MethodView):
         or an error message in case of failure.
         """
         data = request.get_json()
-        username = data.get('username')
-        password = data.get('password')
-        # Authentication process would go here...
-        return jsonify(message=f'Logged in as {username}!')
+        return jsonify(AuthService.verify(name = data.get('name'),password = data.get('password')))
