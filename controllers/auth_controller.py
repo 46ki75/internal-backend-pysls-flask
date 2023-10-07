@@ -1,5 +1,6 @@
 from flask.views import MethodView
 from flask import jsonify, request
+from services.auth_service import AuthService
 
 class AuthController(MethodView):
     """
@@ -17,7 +18,8 @@ class AuthController(MethodView):
         Returns:
         JsonResponse containing a message indicating it's the login page.
         """
-        return jsonify(message='Login page!')
+        message = AuthService.get_login_instruction()
+        return jsonify(message=message)
 
     def post(self):
         """
