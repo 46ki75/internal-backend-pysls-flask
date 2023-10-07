@@ -1,7 +1,11 @@
 from managers.dynamodb_manager import DynamoDBManager
 from flask_bcrypt import Bcrypt
+import jwt
+import datetime
 
 bcrypt = Bcrypt()
+SECRET_KEY = "YOUR_SECRET_KEY"
+
 
 class UserModel:
     
@@ -39,6 +43,21 @@ class UserModel:
             return False
         
         # Verify the bcrypt-hashed password
-        return bcrypt.check_password_hash(self.password,password)
+        if bcrypt.check_password_hash(self.password,password):
+            return self.generate_jwt()
+        return False
 
     
+    def generate_jwt(self):
+        """
+        Generates a JSON Web Token for the user.
+
+        Returns:
+            str: The generated JWT.
+        """
+        payload = {
+            "name": self.name,
+            "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1) 
+        }
+        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        return {"token":token}

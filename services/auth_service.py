@@ -1,7 +1,4 @@
 from models.user_model import UserModel
-from flask_bcrypt import Bcrypt
-
-bcrypt = Bcrypt()
 
 class AuthService:
     """
@@ -26,3 +23,4 @@ class AuthService:
         user = UserModel()
         return user.verify(name=name,password=password)
         
+
