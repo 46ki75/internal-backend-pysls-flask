@@ -1,4 +1,5 @@
 import boto3
+import os
 
 class DynamoDBManager:
     """
@@ -17,7 +18,13 @@ class DynamoDBManager:
             table_name (str): The name of the DynamoDB table. Defaults to 'internal'.
             region_name (str): The AWS region name. Defaults to 'ap-northeast-1'.
         """
-        self.dynamodb = boto3.resource('dynamodb', region_name=region_name)
+        aws_access_key_id = os.environ.get('SLS_AWS_ACCESS_KEY_ID')
+        aws_secret_access_key = os.environ.get('SLS_AWS_SECRET_ACCESS_KEY')
+        boto3_session = boto3.Session(
+            aws_access_key_id=aws_access_key_id,
+            aws_secret_access_key=aws_secret_access_key
+        )
+        self.dynamodb = boto3_session.resource('dynamodb', region_name=region_name)   
         self.table = self.dynamodb.Table(table_name)
 
     def get_item(self, PK=None, SK=None):

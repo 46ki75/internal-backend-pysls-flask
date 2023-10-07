@@ -8,10 +8,17 @@ custom:
   wsgi:
     app: app.app
 
+useDotenv: true
+
 provider:
   name: aws
   runtime: python3.9
   region: ap-northeast-1
+  stage: dev
+  environment:
+    SLS_AWS_ACCESS_KEY_ID: ${env:SLS_AWS_ACCESS_KEY_ID}
+    SLS_AWS_SECRET_ACCESS_KEY: ${env:SLS_AWS_SECRET_ACCESS_KEY}
+    JWT_SECRET_KEY: ${env:JWT_SECRET_KEY}
 
 functions:
   api:
