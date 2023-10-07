@@ -6,5 +6,5 @@ class BookmarkService:
     @staticmethod
     def get_bookmark():
         db = DynamoDBManager()
-        result = db.get_all_items()
+        result = db.get_item(PK="BOOKMARK")
         return result
