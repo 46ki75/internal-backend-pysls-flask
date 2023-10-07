@@ -1,0 +1,36 @@
+from flask.views import MethodView
+from flask import jsonify, request
+
+class AuthController(MethodView):
+    """
+    Controller to handle authentication related endpoints.
+    
+    Methods:
+    - GET: Returns a login page.
+    - POST: Handles the user login process based on provided credentials.
+    """
+
+    def get(self):
+        """
+        Handle GET request for the authentication endpoint.
+        
+        Returns:
+        JsonResponse containing a message indicating it's the login page.
+        """
+        return jsonify(message='Login page!')
+
+    def post(self):
+        """
+        Handle POST request for the authentication endpoint.
+        
+        This method expects a JSON payload with 'username' and 'password'.
+        
+        Returns:
+        JsonResponse containing a message with the logged in username 
+        or an error message in case of failure.
+        """
+        data = request.get_json()
+        username = data.get('username')
+        password = data.get('password')
+        # Authentication process would go here...
+        return jsonify(message=f'Logged in as {username}!')
