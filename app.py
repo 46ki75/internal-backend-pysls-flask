@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, make_response
+from controllers.hello_controller import hello_controller
 
 app = Flask(__name__)
 
+app.register_blueprint(hello_controller)
 
 @app.route("/")
 def hello_from_root():
