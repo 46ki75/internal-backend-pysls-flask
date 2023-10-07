@@ -3,16 +3,16 @@ from flask_bcrypt import Bcrypt
 import jwt
 import datetime
 
+import os
+
 bcrypt = Bcrypt()
 SECRET_KEY = "YOUR_SECRET_KEY"
-
 
 class UserModel:
     
     def __init__(self):
         db = DynamoDBManager()
         user = db.get_item(PK="USER", SK="PROFILE")
-        print(user)
         self.name = user['name']
         self.password = user['password']
 
@@ -53,11 +53,23 @@ class UserModel:
         Generates a JSON Web Token for the user.
 
         Returns:
-            str: The generated JWT.
+            dict: A dictionary containing the generated JWT under the key "token".
+
+        Example:
+            ```python
+            user = UserModel()
+            jwt_data = user.generate_jwt()
+            print(jwt_data["token"])
+            ```
+
+        Output:
+            {
+                "token": "YOUR_JWT_TOKEN_HERE"
+            }
         """
         payload = {
             "name": self.name,
             "exp": datetime.datetime.utcnow() + datetime.timedelta(days=1) 
         }
-        token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        token = jwt.encode(payload, os.environ.get('JWT_SECRET_KEY'), algorithm="HS256")
         return {"token":token}
